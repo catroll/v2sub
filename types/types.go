@@ -11,10 +11,15 @@ type Config struct {
 }
 
 type V2ray struct {
+	LogConfig       *LogConfig       `json:"log"`
 	DNSConfigs      *DNSConfig       `json:"dns"`
 	RouterConfig    *RouterConfig    `json:"routing"`
 	OutboundConfigs []OutboundConfig `json:"outbounds"`
 	InboundConfigs  []InboundConfig  `json:"inbounds"`
+}
+
+type LogConfig struct {
+	LogLevel string `json:"loglevel"`
 }
 
 type DNSConfig struct {
@@ -75,9 +80,15 @@ type SSServerConfig struct {
 	Level    int    `json:"level"`
 }
 
+type WsSetting struct {
+	Headers map[string]string `json:"headers"`
+	Path    string            `json:"path"`
+}
+
 type StreamSetting struct {
-	Network  string `json:"network"`
-	Security string `json:"security"`
+	Network   string    `json:"network"`
+	Security  string    `json:"security"`
+	WsSetting WsSetting `json:"wsSettings"`
 }
 
 type Trojan struct {
@@ -90,6 +101,7 @@ type Trojan struct {
 }
 
 type Node struct {
+	Version  string      `json:"v"`
 	Name     string      `json:"ps"`
 	Addr     string      `json:"add"`
 	Port     interface{} `json:"port"`
@@ -100,6 +112,7 @@ type Node struct {
 	TLS      string      `json:"tls"`
 	Protocol string      `json:"protocol"`
 	AID      interface{} `json:"aid"`
+	Path     string      `json:"path"`
 
 	Ping int `json:"-"`
 }
@@ -125,5 +138,6 @@ type TableRow struct {
 	Addr     string
 	Port     int
 	Protocol string
+	Net      string
 	Ping     int
 }

@@ -2,6 +2,7 @@ package template
 
 import (
 	"encoding/json"
+
 	"github.com/arkrz/v2sub/types"
 )
 
@@ -17,11 +18,15 @@ const (
 )
 
 var domainStrategy = "ipondemand"
+var loglevel = "debug"
 
 var ConfigTemplate = &types.Config{
 	SubUrl: "",
 	Nodes:  types.Nodes{},
 	V2rayConfig: types.V2ray{
+		LogConfig: &types.LogConfig{
+			LogLevel: loglevel,
+		},
 		RouterConfig: &types.RouterConfig{
 			RuleList:       nil,
 			DomainStrategy: domainStrategy,

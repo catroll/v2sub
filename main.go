@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/arkrz/v2sub/ping"
-	"github.com/arkrz/v2sub/template"
-	"github.com/arkrz/v2sub/types"
 	"os"
 	"os/exec"
 	"sort"
 	"time"
+
+	"github.com/arkrz/v2sub/ping"
+	"github.com/arkrz/v2sub/template"
+	"github.com/arkrz/v2sub/types"
 )
 
 const (
@@ -151,6 +152,8 @@ func main() {
 		}
 	}(nodes)
 
+	node.AID = 0
+
 	var v2rayOutboundProtocol string
 	var outboundSetting interface{}
 	var streamSetting types.StreamSetting // v2ray.streamSettings
@@ -168,6 +171,13 @@ func main() {
 		}}
 		streamSetting.Network = node.Net
 		streamSetting.Security = node.TLS
+		fmt.Printf("None: %#v\n", node)
+		if node.Net == "ws" {
+			streamSetting.WsSetting = types.WsSetting{
+				// Headers: node.Headers,
+				Path: node.Path,
+			}
+		}
 
 	case ssProtocol:
 		v2rayOutboundProtocol = ssProtocol

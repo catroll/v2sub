@@ -4,15 +4,16 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/arkrz/v2sub/template"
-	"github.com/arkrz/v2sub/types"
-	"github.com/modood/table"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/arkrz/v2sub/template"
+	"github.com/arkrz/v2sub/types"
+	"github.com/modood/table"
 )
 
 const (
@@ -47,6 +48,9 @@ func ReadConfig(name string) (*types.Config, error) {
 	cfg := &types.Config{}
 	if err = json.Unmarshal(data, cfg); err != nil {
 		return template.ConfigTemplate, err
+	}
+	cfg.V2rayConfig.LogConfig = &types.LogConfig{
+		LogLevel: "debug",
 	}
 	return cfg, nil
 }
@@ -190,6 +194,7 @@ func parseTrojanSub(data string) (*types.Node, bool) {
 }
 
 func parseSSSub(data string) (*types.Node, bool) {
+	fmt.Printf("parse line %v\n", data)
 	idEnd := strings.Index(data, "@")
 	if idEnd < 0 {
 		return nil, false
@@ -309,6 +314,7 @@ func printAsTable(nodes types.Nodes) {
 			Addr:     nodes[i].Addr,
 			Port:     parsePort(nodes[i].Port),
 			Protocol: nodes[i].Protocol,
+			Net:      nodes[i].Net,
 			Ping:     nodes[i].Ping})
 	}
 	table.Output(tableData)
